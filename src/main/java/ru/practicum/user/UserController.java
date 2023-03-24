@@ -12,12 +12,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @PostMapping
-    public User saveNewUser(@RequestBody User user) {
+    public UserDto saveNewUser(@RequestBody UserDto user) {
         return userService.saveUser(user);
     }
 }
