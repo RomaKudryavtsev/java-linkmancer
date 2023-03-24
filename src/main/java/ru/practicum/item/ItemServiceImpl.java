@@ -2,6 +2,7 @@ package ru.practicum.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,12 +17,14 @@ class ItemServiceImpl implements ItemService {
         return ItemMapper.mapToItemDto(userItems);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ItemDto addNewItem(long userId, ItemDto itemDto) {
         Item item = repository.save(ItemMapper.mapToItem(itemDto, userId));;
         return ItemMapper.mapToItemDto(item);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public void deleteItem(long userId, long itemId) {
         repository.deleteByUserIdAndItemId(userId, itemId);
