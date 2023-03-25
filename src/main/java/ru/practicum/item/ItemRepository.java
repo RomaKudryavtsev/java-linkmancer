@@ -2,6 +2,7 @@ package ru.practicum.item;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
@@ -10,7 +11,8 @@ import javax.persistence.SqlResultSetMapping;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositoryCustom {
+public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositoryCustom,
+        QuerydslPredicateExecutor<Item> {
     List<Item> findByUserId(long userId);
     List<ItemInfo> findUrlByUserId(long userId);
     void deleteByUserIdAndId(long userId, long id);

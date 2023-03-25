@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.item.request_dates.DatesRequest;
+import ru.practicum.item.request_tags.TagsRequest;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/items")
@@ -45,6 +47,11 @@ public class ItemController {
         return itemService.countByUserRegistered(from, to);
     }
 
+    @GetMapping("/tags")
+    public List<ItemDto> getItemsByUserIdAndTags(@RequestHeader("X-Later-User-Id") Long userId,
+                                                 @RequestBody TagsRequest tags) {
+        return itemService.getItemsByUserIdAndTags(userId, tags.getTags());
+    }
 
     @PostMapping
     public ItemDto add(@RequestHeader("X-Later-User-Id") Long userId,
