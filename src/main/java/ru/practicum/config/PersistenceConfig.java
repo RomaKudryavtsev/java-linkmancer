@@ -1,6 +1,7 @@
 package ru.practicum.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -10,6 +11,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ru.practicum.item.ItemCountByUserConverter;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -19,6 +21,7 @@ import java.util.Properties;
 @PropertySource(value = "classpath:application.properties")
 @EnableTransactionManagement // включает управление транзакциями и обработку соответствующих аннотаций
 @EnableJpaRepositories(basePackages = "ru.practicum")
+@ComponentScan(basePackages = {"ru.practicum"})
 public class PersistenceConfig {
     private final Environment environment;
 
@@ -65,5 +68,10 @@ public class PersistenceConfig {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
+    }
+
+    @Bean
+    public ItemCountByUserConverter itemCountByUserConverter() {
+        return new ItemCountByUserConverter();
     }
 }
