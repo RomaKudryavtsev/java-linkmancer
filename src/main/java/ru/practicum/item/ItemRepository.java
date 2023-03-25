@@ -3,14 +3,12 @@ package ru.practicum.item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import javax.persistence.ColumnResult;
-import javax.persistence.ConstructorResult;
-import javax.persistence.Convert;
-import javax.persistence.SqlResultSetMapping;
 import java.time.LocalDate;
 import java.util.List;
 
+@RepositoryRestResource
 public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositoryCustom,
         QuerydslPredicateExecutor<Item> {
     List<Item> findByUserId(long userId);
