@@ -17,6 +17,16 @@ class ItemServiceImpl implements ItemService {
         return ItemMapper.mapToItemDto(userItems);
     }
 
+    @Override
+    public List<ItemInfo> getItemUrl(long userId) {
+        return repository.findUrlByUserId(userId);
+    }
+
+    @Override
+    public List<ItemInfoWithUrlState> getItemUrlWithState(long userId) {
+        return repository.findUrlAndStatusByUserId(userId);
+    }
+
     @Transactional
     @Override
     public ItemDto addNewItem(long userId, ItemDto itemDto) {

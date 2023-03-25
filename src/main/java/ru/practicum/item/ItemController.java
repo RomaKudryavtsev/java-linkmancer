@@ -16,6 +16,17 @@ public class ItemController {
         return itemService.getItems(userId);
     }
 
+    @GetMapping("/url")
+    public List<ItemInfo> getUrl(@RequestHeader("X-Later-User-Id") long userId) {
+        return itemService.getItemUrl(userId);
+    }
+
+    @GetMapping("/url/status")
+    public List<ItemInfoWithUrlState> getUrlWithStatus(@RequestHeader("X-Later-User-Id") long userId) {
+        return itemService.getItemUrlWithState(userId);
+    }
+
+
     @PostMapping
     public ItemDto add(@RequestHeader("X-Later-User-Id") Long userId,
                        @RequestBody ItemDto item) {
