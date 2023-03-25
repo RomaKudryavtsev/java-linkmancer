@@ -28,6 +28,11 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserShortWithIP> getUsersByEmailWithIp(String email) {
+        return repository.findAllByEmailContainingIgnoreCaseWithIP(email);
+    }
+
+    @Override
     public UserDto saveUser(UserDto userDto) {
         User user = repository.save(UserMapper.mapToNewUser(userDto));
         return UserMapper.mapToUserDto(user);

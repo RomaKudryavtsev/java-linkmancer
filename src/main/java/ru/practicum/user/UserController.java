@@ -21,6 +21,11 @@ public class UserController {
         return userService.getUsersByEmail(email);
     }
 
+    @GetMapping("/ip/{email}")
+    public List<UserShortWithIP> getUsersByEmailWithIP(@PathVariable("email") String email) {
+        return userService.getUsersByEmailWithIp(email);
+    }
+
     @PostMapping
     public UserDto saveNewUser(@RequestBody UserDto user) {
         return userService.saveUser(user);

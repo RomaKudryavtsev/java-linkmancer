@@ -9,5 +9,7 @@ interface UserService {
 
     List<UserShort> getUsersByEmail(String email);
 
+    List<UserShortWithIP> getUsersByEmailWithIp(String email);
+
     UserDto saveUser(UserDto userDto);
 }
