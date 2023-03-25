@@ -17,16 +17,16 @@ class ItemServiceImpl implements ItemService {
         return ItemMapper.mapToItemDto(userItems);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public ItemDto addNewItem(long userId, ItemDto itemDto) {
         Item item = repository.save(ItemMapper.mapToItem(itemDto, userId));;
         return ItemMapper.mapToItemDto(item);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public void deleteItem(long userId, long itemId) {
-        repository.deleteByUserIdAndItemId(userId, itemId);
+        repository.deleteByUserIdAndId(userId, itemId);
     }
 }

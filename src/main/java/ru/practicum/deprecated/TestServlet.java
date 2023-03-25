@@ -1,4 +1,4 @@
-package ru.practicum;
+package ru.practicum.deprecated;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

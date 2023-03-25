@@ -1,4 +1,4 @@
-package ru.practicum;
+package ru.practicum.deprecated;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

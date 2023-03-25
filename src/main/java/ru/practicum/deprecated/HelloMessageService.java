@@ -1,4 +1,4 @@
-package ru.practicum.service;
+package ru.practicum.deprecated;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

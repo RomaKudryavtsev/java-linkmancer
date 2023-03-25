@@ -21,6 +21,12 @@ class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    @Override
+    public List<UserShort> getUsersByEmail(String email) {
+        return repository.findAllByEmailContainingIgnoreCase(email);
+    }
+
     @Override
     public UserDto saveUser(UserDto userDto) {
         User user = repository.save(UserMapper.mapToNewUser(userDto));
