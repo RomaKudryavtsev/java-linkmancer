@@ -4,7 +4,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-interface UserService {
+public interface UserService {
     List<UserDto> getAllUsers();
 
     List<UserShort> getUsersByEmail(String email);
