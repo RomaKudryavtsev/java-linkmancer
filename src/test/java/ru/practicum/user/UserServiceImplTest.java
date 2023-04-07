@@ -2,10 +2,17 @@ package ru.practicum.user;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.context.web.WebAppConfiguration;
+import ru.practicum.config.AppConfig;
 import ru.practicum.config.PersistenceConfig;
+import ru.practicum.config.WebConfig;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -21,6 +28,10 @@ import static org.hamcrest.Matchers.*;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @TestPropertySource(properties = { "db.name=test"})
 @SpringJUnitConfig( { PersistenceConfig.class, UserServiceImpl.class})
+@ComponentScan(basePackages = {"ru.practicum"})
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = { AppConfig.class, PersistenceConfig.class, WebConfig.class })
+@WebAppConfiguration
 class UserServiceImplTest {
 
     private final EntityManager em;
