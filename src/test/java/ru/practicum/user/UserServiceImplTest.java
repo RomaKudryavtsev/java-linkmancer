@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -26,7 +27,7 @@ import static org.hamcrest.Matchers.*;
 
 @Transactional
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@TestPropertySource(properties = { "db.name=test"})
+@TestPropertySource(locations = "classpath:application-test.properties")
 @SpringJUnitConfig( { PersistenceConfig.class, UserServiceImpl.class})
 @ComponentScan(basePackages = {"ru.practicum"})
 @ExtendWith(SpringExtension.class)
@@ -36,6 +37,15 @@ class UserServiceImplTest {
 
     private final EntityManager em;
     private final UserService service;
+
+    @Autowired
+    Environment env;
+
+    @Test
+    void checkTestProperties() {
+        String dbUrl = env.getProperty("jdbc.url");
+        System.out.println("DB URL: " + dbUrl);
+    }
 
     @Test
     void saveUser() {
