@@ -47,6 +47,11 @@ public class ItemController {
         return itemService.countByUserRegistered(from, to);
     }
 
+    @GetMapping("/search_prefix")
+    public List<ItemDto> findItemByPrefix(@RequestParam("prefix") String prefix) {
+        return itemService.findItemsByLastNamePrefix(prefix);
+    }
+
     @GetMapping("/tags")
     public List<ItemDto> getItemsByUserIdAndTags(@RequestHeader("X-Later-User-Id") Long userId,
                                                  @RequestBody TagsRequest tags) {

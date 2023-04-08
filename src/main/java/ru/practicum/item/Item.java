@@ -1,8 +1,10 @@
 package ru.practicum.item;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import ru.practicum.user.User;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -11,13 +13,15 @@ import java.util.Set;
 @Entity
 @Table(name = "items")
 @Getter @Setter @ToString
+@NoArgsConstructor
 class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column
     private String url;
@@ -27,6 +31,12 @@ class Item {
     @CollectionTable(name="tags", joinColumns=@JoinColumn(name="item_id"))
     @Column(name="name")
     private Set<String> tags = new HashSet<>();
+
+    public Item (User user, String url, Set<String> tags) {
+        this.user = user;
+        this.url = url;
+        this.tags = tags;
+    }
 
     @Override
     public boolean equals(Object o) {

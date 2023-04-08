@@ -9,9 +9,8 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 final class ItemMapper {
-    public static Item mapToItem(ItemDto itemDto, long userId) {
+    public static Item mapToItem(ItemDto itemDto) {
         Item item = new Item();
-        item.setUserId(userId);
         item.setUrl(itemDto.getUrl());
         item.setTags(itemDto.getTags());
         return item;
@@ -20,7 +19,7 @@ final class ItemMapper {
     public static ItemDto mapToItemDto(Item item) {
         return new ItemDto(
                 item.getId(),
-                item.getUserId(),
+                item.getUser().getId(),
                 item.getUrl(),
                 new HashSet<>(item.getTags())
         );

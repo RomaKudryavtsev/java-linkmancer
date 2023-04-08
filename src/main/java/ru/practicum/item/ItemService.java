@@ -19,5 +19,7 @@ interface ItemService {
 
     List<ItemCountByUser> countByUserRegistered(LocalDate dateFrom, LocalDate dateTo);
 
-    public List<ItemDto> getItemsByUserIdAndTags(long userId, Set<String> tags);
+    List<ItemDto> getItemsByUserIdAndTags(long userId, Set<String> tags);
+
+    List<ItemDto> findItemsByLastNamePrefix(String lastNamePrefix);
 }
