@@ -19,7 +19,7 @@ public class ItemNote {
     private Long id;
     @Column(name = "text")
     private String text;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     Item item;
     @Column(name = "save_date")
