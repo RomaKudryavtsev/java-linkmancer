@@ -13,6 +13,14 @@ url VARCHAR(1000),
 CONSTRAINT fk_items_to_users FOREIGN KEY(user_id) REFERENCES users(id),
 UNIQUE(id, url) );
 
+CREATE TABLE IF NOT EXISTS item_notes (
+id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+text VARCHAR(2000),
+item_id BIGINT,
+save_date timestamp,
+CONSTRAINT fk_item_notes_to_items FOREIGN KEY(item_id) REFERENCES items(id)
+);
+
 CREATE TABLE IF NOT EXISTS tags (
 id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 item_id BIGINT,

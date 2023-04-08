@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "items")
 @Getter @Setter @ToString
 @NoArgsConstructor
-class Item {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
