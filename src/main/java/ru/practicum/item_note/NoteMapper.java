@@ -12,6 +12,7 @@ public class NoteMapper {
                 .id(note.getId())
                 .text(note.getText())
                 .itemId(note.getItem().getId())
+                .itemUrl(note.getItem().getUrl())
                 .saveDate(note.getSaveDate())
                 .build();
     }

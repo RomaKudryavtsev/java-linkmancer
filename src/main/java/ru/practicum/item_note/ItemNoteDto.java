@@ -15,4 +15,5 @@ public class ItemNoteDto {
     String text;
     Long itemId;
     Instant saveDate;
+    String itemUrl;
 }
