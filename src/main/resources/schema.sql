@@ -10,6 +10,12 @@ CREATE TABLE IF NOT EXISTS items (
 id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 user_id BIGINT,
 url VARCHAR(1000),
+resolved_url VARCHAR(1000),
+mime_type VARCHAR(1000),
+title VARCHAR(1000),
+has_image BOOLEAN,
+has_video BOOLEAN,
+date_resolved timestamp,
 CONSTRAINT fk_items_to_users FOREIGN KEY(user_id) REFERENCES users(id),
 UNIQUE(id, url) );
 

@@ -7,6 +7,7 @@ import lombok.ToString;
 import ru.practicum.user.User;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +26,20 @@ public class Item {
 
     @Column
     private String url;
+
     // здесь остальные поля
+    @Column(name = "resolved_url")
+    private String resolvedUrl;
+    @Column(name = "mime_type")
+    private String mimeType;
+    @Column(name = "title")
+    private String title;
+    @Column(name = "has_image")
+    private Boolean hasImage;
+    @Column(name = "has_video")
+    private Boolean hasVideo;
+    @Column(name = "date_resolved")
+    private Instant dateResolved;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name="tags", joinColumns=@JoinColumn(name="item_id"))
