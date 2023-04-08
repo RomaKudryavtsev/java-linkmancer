@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -29,7 +30,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 @Transactional
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+//@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @SpringJUnitConfig( { PersistenceConfig.class, ItemServiceImpl.class})
 @ComponentScan(basePackages = {"ru.practicum"})
@@ -41,6 +42,12 @@ public class ItemServiceImplTest {
     private final ItemService itemService;
     private final UserService userService;
 
+    @Autowired
+    public ItemServiceImplTest(EntityManager em, ItemService itemService, @Qualifier("userServiceImpl") UserService userService) {
+        this.em = em;
+        this.itemService = itemService;
+        this.userService = userService;
+    }
     @Test
     void saveItem() {
         // given

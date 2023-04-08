@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,7 +27,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @Transactional
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+//@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @SpringJUnitConfig( { PersistenceConfig.class, UserServiceImpl.class})
 @ComponentScan(basePackages = {"ru.practicum"})
@@ -38,6 +39,11 @@ class UserServiceImplTest {
     private final EntityManager em;
     private final UserService service;
 
+    @Autowired
+    public UserServiceImplTest(EntityManager em, @Qualifier("userServiceImpl") UserService userService) {
+        this.em = em;
+        this.service = userService;
+    }
     @Autowired
     Environment env;
 

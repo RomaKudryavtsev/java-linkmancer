@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -33,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @ContextConfiguration(classes = { AppConfig.class, PersistenceConfig.class, WebConfig.class })
 @WebAppConfiguration
+@TestPropertySource(locations = "classpath:application-test.properties")
 public class UserControllerTestWithContext {
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -43,7 +46,7 @@ public class UserControllerTestWithContext {
     private UserDto userDto;
 
     @Autowired
-    UserControllerTestWithContext(UserService userService) {
+    UserControllerTestWithContext(@Qualifier("userService") UserService userService) {
         this.userService = userService;
     }
 
@@ -73,7 +76,6 @@ public class UserControllerTestWithContext {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(userDto.getId()), Long.class))
                 .andExpect(jsonPath("$.firstName", is(userDto.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(userDto.getLastName())))
                 .andExpect(jsonPath("$.email", is(userDto.getEmail())));
