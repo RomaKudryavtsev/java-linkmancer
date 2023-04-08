@@ -34,4 +34,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositor
             "join it.user as u " +
             "where u.lastName like concat(?1, '%') ")
     List<Item> findItemsByLastNamePrefix(String lastNamePrefix);
+
+    //NOTE: Below is alternative to above
+    List<Item> findAllByUserLastNameStartingWith(String lastNamePrefix);
 }
