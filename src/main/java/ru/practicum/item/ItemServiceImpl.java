@@ -154,6 +154,12 @@ class ItemServiceImpl implements ItemService {
         return ItemMapper.mapToItemDto(itemRepository.findById(request.getItemId()).orElseThrow());
     }
 
+    @Override
+    public void deleteById(long userId, long itemId) {
+        checkIfOwnerIsModifying(userId, itemId);
+        itemRepository.deleteById(itemId);
+    }
+
     private void checkIfOwnerIsModifying(long userId, long itemId) {
         if(itemRepository.findById(itemId).orElseThrow().getUser().getId() != userId) {
             throw new RuntimeException("Only item owner has the right to modify item");

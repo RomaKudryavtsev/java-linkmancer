@@ -29,4 +29,6 @@ interface ItemService {
     List<ItemDto> searchWithFilters(SearchRequest build);
 
     ItemDto modifyItem(ModifyRequest build);
+
+    void deleteById(long userId, long itemId);
 }

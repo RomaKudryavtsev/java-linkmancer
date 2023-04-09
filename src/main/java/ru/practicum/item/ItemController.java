@@ -44,7 +44,11 @@ public class ItemController {
                 .build());
     }
 
-    //TODO: implement item deletion
+    @DeleteMapping(value = "/{id}/delete")
+    public String deleteById(@RequestHeader("X-Later-User-Id") long userId, @PathVariable("id") long itemId) {
+        itemService.deleteById(userId, itemId);
+        return "deleted";
+    }
 
     @GetMapping
     public List<ItemDto> get(@RequestHeader("X-Later-User-Id") long userId) {
