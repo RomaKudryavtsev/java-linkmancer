@@ -21,6 +21,7 @@ public class NoteServiceImpl implements NoteService {
     //private final UserRepository userRepository;
 
     //TODO: We need to use userId somehow - e.g., notes can be only by item's owner
+    //Мы хотим, чтобы пользователь видел только те ссылки, которые он сам сохранил.
     @Override
     @Transactional
     public ItemNoteDto addNote(Long userId, ItemNoteDto itemNoteDto) {

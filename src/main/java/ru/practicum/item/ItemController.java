@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.item.request_dates.DatesRequest;
+import ru.practicum.item.request_search.SearchRequest;
 import ru.practicum.item.request_tags.TagsRequest;
 
 import java.time.LocalDate;
@@ -17,6 +18,16 @@ import java.util.Set;
 @Slf4j
 public class ItemController {
     private final ItemService itemService;
+
+    @GetMapping
+    public List<ItemDto> searchWithFilters(@RequestHeader("X-Later-User-Id") long userId,
+                             @RequestParam(defaultValue = "unread") String state,
+                             @RequestParam(defaultValue = "all") String contentType,
+                             @RequestParam(defaultValue = "newest") String sort,
+                             @RequestParam(defaultValue = "10") int limit,
+                             @RequestParam(required = false) List<String> tags) {
+        return itemService.searchWithFilters(new SearchRequest(userId, state, contentType, sort, limit, tags));
+    }
 
     @GetMapping
     public List<ItemDto> get(@RequestHeader("X-Later-User-Id") long userId) {

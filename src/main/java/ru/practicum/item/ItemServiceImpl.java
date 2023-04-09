@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.item.request_search.SearchRequest;
 import ru.practicum.item.url_retriever.UrlMetadata;
 import ru.practicum.item.url_retriever.UrlMetadataRetriever;
 import ru.practicum.user.User;
@@ -24,6 +25,8 @@ class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
     private final UrlMetadataRetriever retriever;
+
+    private
 
     @Override
     public List<ItemDto> getItems(long userId) {
@@ -104,6 +107,12 @@ class ItemServiceImpl implements ItemService {
     public List<ItemDto> findItemsByLastNamePrefix(String lastNamePrefix) {
         return itemRepository.findItemsByLastNamePrefix(lastNamePrefix).stream()
                 .map(ItemMapper::mapToItemDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ItemDto> searchWithFilters(SearchRequest build) {
+
+        return null;
     }
 
 }
