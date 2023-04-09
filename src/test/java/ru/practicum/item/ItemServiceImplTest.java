@@ -53,18 +53,13 @@ public class ItemServiceImplTest {
         UserDto userDto = makeUserDto("some@email.com", "Peter", "Pan");
         ItemDto itemDto = new ItemDto();
         itemDto.setTags(Set.of("Nature", "Animals"));
-        itemDto.setUrl("google.com/animals");
+        itemDto.setUrl("http://querydsl.com/static/querydsl/5.0.0/reference/html_single/#d0e245");
 
         // when
-        userService.saveUser(userDto);
+        UserDto savedUserDto = userService.saveUser(userDto);
+        itemService.addNewItem(savedUserDto.getId(), itemDto);
 
         // then
-        TypedQuery<User> queryUser = em.createQuery("Select u from User u where u.email = :email", User.class);
-        User user = queryUser.setParameter("email", userDto.getEmail())
-                .getSingleResult();
-
-        itemService.addNewItem(user.getId(), itemDto);
-
         TypedQuery<Item> queryItem = em.createQuery("Select i from Item i where i.url = :url", Item.class);
         Item item = queryItem.setParameter("url", itemDto.getUrl())
                 .getSingleResult();
