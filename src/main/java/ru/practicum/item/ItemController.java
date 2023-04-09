@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.item.request_dates.DatesRequest;
+import ru.practicum.item.request_modify.ModifyRequest;
 import ru.practicum.item.request_search.SearchRequest;
 import ru.practicum.item.request_tags.TagsRequest;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/items")
@@ -21,13 +21,30 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<ItemDto> searchWithFilters(@RequestHeader("X-Later-User-Id") long userId,
-                             @RequestParam(defaultValue = "UNREAD") String state,
-                             @RequestParam(defaultValue = "ALL") String contentType,
-                             @RequestParam(defaultValue = "NEWEST") String sort,
-                             @RequestParam(defaultValue = "10") int limit,
-                             @RequestParam(required = false) List<String> tags) {
-        return itemService.searchWithFilters(new SearchRequest(userId, state, contentType, sort, limit, tags));
+                                           @RequestParam(name = "state", defaultValue = "UNREAD") String state,
+                                           @RequestParam(name = "content", defaultValue = "ALL") String content,
+                                           @RequestParam(name = "sort", defaultValue = "NEWEST") String sort,
+                                           @RequestParam(name = "limit", defaultValue = "10") int limit,
+                                           @RequestParam(name = "tags", required = false) List<String> tags) {
+        return itemService.searchWithFilters(new SearchRequest(userId, state, content, sort, limit, tags));
     }
+
+    @PatchMapping(value = "/{id}/modify")
+    public ItemDto modifyItem(@PathVariable("id") long itemId,
+                              @RequestHeader("X-Later-User-Id") long userId,
+                              @RequestParam(name = "replace", defaultValue = "true") Boolean replace,
+                              @RequestParam(name = "unread", required = false, defaultValue = "false") Boolean unread,
+                              @RequestBody (required = false) TagsRequest tagsRequest) {
+        return itemService.modifyItem(ModifyRequest.builder()
+                .itemId(itemId)
+                .userId(userId)
+                .replaceTags(replace)
+                .unread(unread)
+                .tags(tagsRequest.getTags())
+                .build());
+    }
+
+    //TODO: implement item deletion
 
     @GetMapping
     public List<ItemDto> get(@RequestHeader("X-Later-User-Id") long userId) {
@@ -70,8 +87,8 @@ public class ItemController {
     }
 
     @PostMapping
-    public ItemDto add(@RequestHeader("X-Later-User-Id") Long userId,
-                       @RequestBody ItemDto item) {
+    public ItemDto addItem(@RequestHeader("X-Later-User-Id") Long userId,
+                           @RequestBody ItemDto item) {
         return itemService.addNewItem(userId, item);
     }
 

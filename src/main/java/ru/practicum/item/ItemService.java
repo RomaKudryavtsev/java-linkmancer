@@ -1,5 +1,6 @@
 package ru.practicum.item;
 
+import ru.practicum.item.request_modify.ModifyRequest;
 import ru.practicum.item.request_search.SearchRequest;
 
 import java.time.LocalDate;
@@ -26,4 +27,6 @@ interface ItemService {
     List<ItemDto> findItemsByLastNamePrefix(String lastNamePrefix);
 
     List<ItemDto> searchWithFilters(SearchRequest build);
+
+    ItemDto modifyItem(ModifyRequest build);
 }

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.item.request_modify.ModifyRequest;
 import ru.practicum.item.request_search.ContentType;
 import ru.practicum.item.request_search.SearchRequest;
 import ru.practicum.item.request_search.SearchState;
@@ -128,6 +129,35 @@ class ItemServiceImpl implements ItemService {
         Pageable pageRequest = makePageRequest(request.getLimit());
         return itemRepository.findAll(allConditions, pageRequest).getContent()
                 .stream().sorted(comparator).map(ItemMapper::mapToItemDto).collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public ItemDto modifyItem(ModifyRequest request) {
+        checkIfOwnerIsModifying(request.getUserId(), request.getItemId());
+        if(request.getUnread() != null) {
+            itemRepository.modifyReadStatus(request.getItemId(), request.getUnread());
+        }
+        if(request.getTags() != null && !request.getTags().isEmpty()) {
+            Item toBeUpdated = itemRepository.findById(request.getItemId()).orElseThrow();
+            if (request.getReplaceTags()) {
+                //NOTE: Rewrite all tags
+                toBeUpdated.setTags(request.getTags());
+            } else {
+                //NOTE: Add tags
+                Set<String> updatedTags = toBeUpdated.getTags();
+                updatedTags.addAll(request.getTags());
+                toBeUpdated.setTags(updatedTags);
+            }
+            itemRepository.save(toBeUpdated);
+        }
+        return ItemMapper.mapToItemDto(itemRepository.findById(request.getItemId()).orElseThrow());
+    }
+
+    private void checkIfOwnerIsModifying(long userId, long itemId) {
+        if(itemRepository.findById(itemId).orElseThrow().getUser().getId() != userId) {
+            throw new RuntimeException("Only item owner has the right to modify item");
+        }
     }
 
     private BooleanExpression makeByUnreadExpression(SearchState state) {

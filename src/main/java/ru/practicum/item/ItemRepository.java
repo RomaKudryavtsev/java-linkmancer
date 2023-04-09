@@ -1,18 +1,16 @@
 package ru.practicum.item;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.user.User;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 @RepositoryRestResource
 public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositoryCustom,
@@ -44,4 +42,8 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositor
     //NOTE: Below is alternative to above
     List<Item> findAllByUserLastNameStartingWith(String lastNamePrefix);
 
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query("update Item i set i.unread = ?2 where i.id = ?1")
+    void modifyReadStatus(Long itemId, Boolean unread);
 }
