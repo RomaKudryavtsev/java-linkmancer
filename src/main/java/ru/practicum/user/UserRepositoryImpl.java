@@ -7,11 +7,11 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UserRepositoryImpl implements UserRepositoryCustom{
+public class UserRepositoryImpl implements UserRepositoryCustom {
 
     private final UserRepository userRepository;
 
-    public UserRepositoryImpl(@Lazy UserRepository userRepository){
+    public UserRepositoryImpl(@Lazy UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -32,7 +32,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
 
     private String getEmailServer(String email) {
         String[] emailParts = email.split("\\@");//никогда так не делайте :-)
-        if(emailParts.length != 2 || emailParts[1].isEmpty()){
+        if (emailParts.length != 2 || emailParts[1].isEmpty()) {
             throw new IllegalArgumentException("Incorrect domain");
         }
         return emailParts[1];

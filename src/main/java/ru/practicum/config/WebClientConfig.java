@@ -8,7 +8,6 @@ import reactor.netty.http.client.HttpClient;
 
 @Configuration
 public class WebClientConfig {
-
     @Bean
     public ClientHttpConnector clientHttpConnector() {
         HttpClient httpClient = HttpClient.create();

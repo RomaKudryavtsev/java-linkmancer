@@ -11,7 +11,9 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "item_notes")
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class ItemNote {
     @Id

@@ -13,7 +13,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "items")
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class Item {
     @Id
@@ -46,11 +48,11 @@ public class Item {
     private Instant dateResolved;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name="tags", joinColumns=@JoinColumn(name="item_id"))
-    @Column(name="name")
+    @CollectionTable(name = "tags", joinColumns = @JoinColumn(name = "item_id"))
+    @Column(name = "name")
     private Set<String> tags = new HashSet<>();
 
-    public Item (User user, String url, Set<String> tags) {
+    public Item(User user, String url, Set<String> tags) {
         this.user = user;
         this.url = url;
         this.tags = tags;

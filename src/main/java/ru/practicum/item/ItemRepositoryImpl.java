@@ -1,7 +1,6 @@
 package ru.practicum.item;
 
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;

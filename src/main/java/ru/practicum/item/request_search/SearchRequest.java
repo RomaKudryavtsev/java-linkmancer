@@ -1,7 +1,6 @@
 package ru.practicum.item.request_search;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
@@ -17,7 +16,7 @@ public class SearchRequest {
     Integer limit;
     List<String> tags;
 
-    public SearchRequest (Long userId, String state, String contentType, String sort, Integer limit, List<String> tags) {
+    public SearchRequest(Long userId, String state, String contentType, String sort, Integer limit, List<String> tags) {
         this.userId = userId;
         this.state = parseState(state);
         this.contentType = parseContentType(contentType);
@@ -40,7 +39,6 @@ public class SearchRequest {
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Wrong content type");
         }
-
     }
 
     private SortType parseSortType(String sort) {

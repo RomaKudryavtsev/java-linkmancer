@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.item.request_tags.TagsRequest;
 
-import java.util.Set;
-
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)

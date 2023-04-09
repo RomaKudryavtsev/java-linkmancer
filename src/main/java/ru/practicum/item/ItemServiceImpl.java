@@ -3,10 +3,8 @@ package ru.practicum.item;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.item.request_modify.ModifyRequest;
@@ -67,11 +65,11 @@ class ItemServiceImpl implements ItemService {
 
         Optional<Item> itemOpt = itemRepository.findByUserAndResolvedUrl(adder, meta.getResolvedUrl());
         Item outputItem;
-        if(itemOpt.isEmpty()) {
+        if (itemOpt.isEmpty()) {
             outputItem = itemRepository.save(inputItem);
         } else {
             inputItem = itemOpt.get();
-            if(itemDto.getTags() != null && !itemDto.getTags().isEmpty()) {
+            if (itemDto.getTags() != null && !itemDto.getTags().isEmpty()) {
                 inputItem.getTags().addAll(itemDto.getTags());
                 outputItem = itemRepository.save(inputItem);
             } else {
@@ -121,7 +119,7 @@ class ItemServiceImpl implements ItemService {
         BooleanExpression byUnread = makeByUnreadExpression(request.getState());
         BooleanExpression byContentType = makeByContentTypeExpression(request.getContentType());
         BooleanExpression allConditions = byUserId.and(byUnread).and(byContentType);
-        if(request.getTags() != null) {
+        if (request.getTags() != null) {
             BooleanExpression byAnyTag = QItem.item.tags.any().in(request.getTags());
             allConditions = allConditions.and(byAnyTag);
         }
@@ -135,10 +133,10 @@ class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto modifyItem(ModifyRequest request) {
         checkIfOwnerIsModifying(request.getUserId(), request.getItemId());
-        if(request.getUnread() != null) {
+        if (request.getUnread() != null) {
             itemRepository.modifyReadStatus(request.getItemId(), request.getUnread());
         }
-        if(request.getTags() != null && !request.getTags().getTags().isEmpty()) {
+        if (request.getTags() != null && !request.getTags().getTags().isEmpty()) {
             Item toBeUpdated = itemRepository.findById(request.getItemId()).orElseThrow();
             if (request.getReplaceTags()) {
                 //NOTE: Rewrite all tags
@@ -161,7 +159,7 @@ class ItemServiceImpl implements ItemService {
     }
 
     private void checkIfOwnerIsModifying(long userId, long itemId) {
-        if(itemRepository.findById(itemId).orElseThrow().getUser().getId() != userId) {
+        if (itemRepository.findById(itemId).orElseThrow().getUser().getId() != userId) {
             throw new RuntimeException("Only item owner has the right to modify item");
         }
     }
@@ -194,7 +192,7 @@ class ItemServiceImpl implements ItemService {
     }
 
     private Comparator<Item> makeComparator(SortType sortType) {
-        switch(sortType) {
+        switch (sortType) {
             case NEWEST:
                 return Comparator.comparing(Item::getDateResolved).reversed();
             case OLDEST:

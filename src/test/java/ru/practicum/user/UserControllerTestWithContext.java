@@ -30,10 +30,10 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringJUnitWebConfig({ UserController.class, TestConfig.class, WebConfig.class, AppConfig.class})
+@SpringJUnitWebConfig({UserController.class, TestConfig.class, WebConfig.class, AppConfig.class})
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-@ContextConfiguration(classes = { AppConfig.class, PersistenceConfig.class, WebConfig.class })
+@ContextConfiguration(classes = {AppConfig.class, PersistenceConfig.class, WebConfig.class})
 @WebAppConfiguration
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class UserControllerTestWithContext {

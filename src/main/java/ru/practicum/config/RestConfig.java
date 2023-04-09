@@ -11,7 +11,6 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguratio
 @Configuration
 @Import({RepositoryRestMvcConfiguration.class})
 public class RestConfig {
-
     @Bean
     public RepositoryRestConfigurer repositoryRestConfigurer() {
 

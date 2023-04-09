@@ -34,7 +34,7 @@ public class ItemController {
                               @RequestHeader("X-Later-User-Id") long userId,
                               @RequestParam(name = "replace", defaultValue = "true") Boolean replace,
                               @RequestParam(name = "unread", required = false, defaultValue = "false") Boolean unread,
-                              @RequestBody (required = false) TagsRequest tagsRequest) {
+                              @RequestBody(required = false) TagsRequest tagsRequest) {
         return itemService.modifyItem(ModifyRequest.builder()
                 .itemId(itemId)
                 .userId(userId)

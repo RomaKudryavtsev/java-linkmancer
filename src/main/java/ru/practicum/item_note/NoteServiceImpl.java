@@ -1,13 +1,11 @@
 package ru.practicum.item_note;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.item.ItemRepository;
-import ru.practicum.user.UserRepository;
 
 import java.time.Instant;
 import java.util.List;

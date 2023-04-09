@@ -25,7 +25,7 @@ public class NoteController {
 
     @GetMapping("/search/tags")
     public List<ItemNoteDto> searchNotesByTag(@RequestHeader("X-Later-User-Id") Long userId,
-                                               @RequestParam("tag") String tag) {
+                                              @RequestParam("tag") String tag) {
         return noteService.searchNotesByTag(userId, tag);
     }
 

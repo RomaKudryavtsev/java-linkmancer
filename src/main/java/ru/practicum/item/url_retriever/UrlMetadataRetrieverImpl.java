@@ -30,7 +30,7 @@ public class UrlMetadataRetrieverImpl implements UrlMetadataRetriever {
     // ссылки для сохранения. Этот параметр Spring получает из файла настроек и автоматически
     // внедряет в бин. Если в файле настроек таймаут не указан, то по умолчанию он будет равен
     // 120 секундам.
-    public UrlMetadataRetrieverImpl (@Value("${url-metadata-retriever.read_timeout-sec:120}") int readTimeout) {
+    public UrlMetadataRetrieverImpl(@Value("${url-metadata-retriever.read_timeout-sec:120}") int readTimeout) {
         // Для получения метаданных об URL воспользуемся стандартным HttpClient'ом.
         // Для этого создадим его экземпляр с нужными нам настройками
         // Во первых, указываем всегда переходить по новому адресу, если сервер
@@ -38,7 +38,7 @@ public class UrlMetadataRetrieverImpl implements UrlMetadataRetriever {
         // например если пользователь сохраняет сокращенную ссылку (полученную, например
         // через сервис bitly.com) или по каким-либо другим причинам. Также указываем таймаут
         // ожидания соединения.
-        this.client =  HttpClient.newBuilder()
+        this.client = HttpClient.newBuilder()
                 .followRedirects(HttpClient.Redirect.ALWAYS)
                 .connectTimeout(Duration.ofSeconds(readTimeout))
                 .build();
@@ -119,14 +119,14 @@ public class UrlMetadataRetrieverImpl implements UrlMetadataRetriever {
         }
 
         HttpStatus status = HttpStatus.resolve(response.statusCode());
-        if(status == null) {
+        if (status == null) {
             throw new ItemRetrieverException("The server returned an unknown status code: " + response.statusCode());
         }
 
-        if(status.equals(HttpStatus.UNAUTHORIZED) || status.equals(HttpStatus.FORBIDDEN)) {
+        if (status.equals(HttpStatus.UNAUTHORIZED) || status.equals(HttpStatus.FORBIDDEN)) {
             throw new ItemRetrieverException("There is no access to the resource at the specified URL: " + url);
         }
-        if(status.isError()) {
+        if (status.isError()) {
             throw new ItemRetrieverException("Cannot get the data on the item because the server returned an error."
                     + "Response status: " + status);
         }

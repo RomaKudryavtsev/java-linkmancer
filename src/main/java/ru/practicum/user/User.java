@@ -9,7 +9,9 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "users", schema = "public")
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 public class User {
 
     @Id

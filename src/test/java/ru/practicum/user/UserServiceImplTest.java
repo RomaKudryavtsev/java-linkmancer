@@ -1,6 +1,5 @@
 package ru.practicum.user;
 
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +26,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @Transactional
-//@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @TestPropertySource(locations = "classpath:application-test.properties")
-@SpringJUnitConfig( { PersistenceConfig.class, UserServiceImpl.class})
+@SpringJUnitConfig({PersistenceConfig.class, UserServiceImpl.class})
 @ComponentScan(basePackages = {"ru.practicum"})
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { AppConfig.class, PersistenceConfig.class, WebConfig.class })
+@ContextConfiguration(classes = {AppConfig.class, PersistenceConfig.class, WebConfig.class})
 @WebAppConfiguration
 class UserServiceImplTest {
 
@@ -44,6 +42,7 @@ class UserServiceImplTest {
         this.em = em;
         this.service = userService;
     }
+
     @Autowired
     Environment env;
 
@@ -95,7 +94,7 @@ class UserServiceImplTest {
         // then
         assertThat(targetUsers, hasSize(sourceUsers.size()));
         for (UserDto sourceUser : sourceUsers) {
-            assertThat(targetUsers, hasItem( allOf(
+            assertThat(targetUsers, hasItem(allOf(
                     hasProperty("id", notNullValue()),
                     hasProperty("firstName", equalTo(sourceUser.getFirstName())),
                     hasProperty("lastName", equalTo(sourceUser.getLastName())),

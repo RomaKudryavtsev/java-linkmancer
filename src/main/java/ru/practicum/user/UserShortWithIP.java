@@ -11,7 +11,7 @@ public class UserShortWithIP implements UserShort {
     private String email;
     private String ip;
 
-    public UserShortWithIP(UserShort user, String ip){
+    public UserShortWithIP(UserShort user, String ip) {
         this.firstName = user.getFirstName();
         this.email = user.getEmail();
         this.ip = ip;
