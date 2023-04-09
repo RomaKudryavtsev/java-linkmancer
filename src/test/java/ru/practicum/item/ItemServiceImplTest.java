@@ -13,7 +13,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import ru.practicum.config.AppConfig;
 import ru.practicum.config.PersistenceConfig;
 import ru.practicum.config.WebConfig;
-import ru.practicum.user.User;
 import ru.practicum.user.UserDto;
 import ru.practicum.user.UserService;
 import ru.practicum.user.UserState;
@@ -52,8 +51,8 @@ public class ItemServiceImplTest {
         // given
         UserDto userDto = makeUserDto("some@email.com", "Peter", "Pan");
         ItemDto itemDto = new ItemDto();
-        itemDto.setTags(Set.of("Nature", "Animals"));
-        itemDto.setUrl("http://querydsl.com/static/querydsl/5.0.0/reference/html_single/#d0e245");
+        itemDto.setTags(Set.of("Trading", "IT"));
+        itemDto.setUrl("https://algotrading101.com/learn/deribit-api-guide/");
 
         // when
         UserDto savedUserDto = userService.saveUser(userDto);
@@ -66,6 +65,11 @@ public class ItemServiceImplTest {
 
         assertThat(item.getId(), notNullValue());
         assertThat(item.getUrl(), equalTo(itemDto.getUrl()));
+        assertThat(item.getMimeType(), equalTo("text"));
+        assertThat(item.getHasImage(), equalTo(true));
+        assertThat(item.getHasVideo(), equalTo(false));
+        assertThat(item.getHasText(), equalTo(true));
+        assertThat(item.getUnread(), equalTo(true));
         assertThat(item.getTags(), notNullValue());
     }
 
