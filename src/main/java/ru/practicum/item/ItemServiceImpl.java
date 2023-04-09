@@ -3,6 +3,10 @@ package ru.practicum.item;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.item.request_search.SearchRequest;
@@ -13,9 +17,7 @@ import ru.practicum.user.UserRepository;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -111,8 +113,57 @@ class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> searchWithFilters(SearchRequest request) {
-
-        return null;
+        BooleanExpression byUserId = QItem.item.user.id.eq(request.getUserId());
+        BooleanExpression byUnread;
+        switch (request.getState()) {
+            case READ:
+                byUnread = QItem.item.unread.isFalse();
+                break;
+            case UNREAD:
+                byUnread = QItem.item.unread.isTrue();
+                break;
+            default:
+                byUnread = QItem.item.unread.isFalse()
+                        .or(QItem.item.unread.isTrue());
+                break;
+        }
+        BooleanExpression byContentType;
+        switch (request.getContentType()) {
+            case ARTICLE:
+                byContentType = QItem.item.hasText.isTrue();
+                break;
+            case IMAGE:
+                byContentType = QItem.item.hasImage.isTrue();
+                break;
+            case VIDEO:
+                byContentType = QItem.item.hasVideo.isTrue();
+                break;
+            default:
+                byContentType = QItem.item.hasText.isTrue()
+                        .or(QItem.item.hasImage.isTrue())
+                        .or(QItem.item.hasVideo.isTrue());
+                break;
+        }
+        BooleanExpression allConditions = byUserId.and(byUnread).and(byContentType);
+        if(request.getTags() != null) {
+            BooleanExpression byAnyTag = QItem.item.tags.any().in(request.getTags());
+            allConditions = allConditions.and(byAnyTag);
+        }
+        Comparator<Item> comparator;
+        switch(request.getSort()) {
+            case NEWEST:
+                comparator = Comparator.comparing(Item::getDateResolved).reversed();
+                break;
+            case OLDEST:
+                comparator = Comparator.comparing(Item::getDateResolved);
+                break;
+            default:
+                comparator = Comparator.comparing(Item::getTitle);
+                break;
+        }
+        Pageable pageRequest = PageRequest.of(0, request.getLimit());
+        return itemRepository.findAll(allConditions, pageRequest).getContent()
+                .stream().sorted(comparator).map(ItemMapper::mapToItemDto).collect(Collectors.toList());
     }
 
 }

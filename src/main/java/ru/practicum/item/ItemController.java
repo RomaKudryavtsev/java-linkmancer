@@ -21,9 +21,9 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<ItemDto> searchWithFilters(@RequestHeader("X-Later-User-Id") long userId,
-                             @RequestParam(defaultValue = "unread") String state,
-                             @RequestParam(defaultValue = "all") String contentType,
-                             @RequestParam(defaultValue = "newest") String sort,
+                             @RequestParam(defaultValue = "UNREAD") String state,
+                             @RequestParam(defaultValue = "ALL") String contentType,
+                             @RequestParam(defaultValue = "NEWEST") String sort,
                              @RequestParam(defaultValue = "10") int limit,
                              @RequestParam(required = false) List<String> tags) {
         return itemService.searchWithFilters(new SearchRequest(userId, state, contentType, sort, limit, tags));
