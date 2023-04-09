@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.item.url_retriever.UrlMetadata;
+import ru.practicum.item.url_retriever.UrlMetadataRetriever;
 import ru.practicum.user.UserRepository;
 
 import java.math.BigInteger;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+    private final UrlMetadataRetriever retriever;
 
     @Override
     public List<ItemDto> getItems(long userId) {
@@ -41,6 +44,14 @@ class ItemServiceImpl implements ItemService {
     public ItemDto addNewItem(long userId, ItemDto itemDto) {
         Item inputItem = ItemMapper.mapToItem(itemDto);
         inputItem.setUser(userRepository.findById(userId).orElseThrow());
+        UrlMetadata meta = retriever.retrieve(inputItem.getUrl());
+        inputItem.setUrl(meta.getNormalUrl());
+        inputItem.setResolvedUrl(meta.getResolvedUrl());
+        inputItem.setMimeType(meta.getMimeType());
+        inputItem.setTitle(meta.getTitle());
+        inputItem.setHasImage(meta.isHasImage());
+        inputItem.setHasVideo(meta.isHasVideo());
+        inputItem.setDateResolved(meta.getDateResolved());
         Item outputItem = itemRepository.save(inputItem);
         return ItemMapper.mapToItemDto(outputItem);
     }
