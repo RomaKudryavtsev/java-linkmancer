@@ -9,7 +9,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.item.request_search.ContentType;
 import ru.practicum.item.request_search.SearchRequest;
+import ru.practicum.item.request_search.SearchState;
+import ru.practicum.item.request_search.SortType;
 import ru.practicum.item.url_retriever.UrlMetadata;
 import ru.practicum.item.url_retriever.UrlMetadataRetriever;
 import ru.practicum.user.User;
@@ -114,56 +117,59 @@ class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> searchWithFilters(SearchRequest request) {
         BooleanExpression byUserId = QItem.item.user.id.eq(request.getUserId());
-        BooleanExpression byUnread;
-        switch (request.getState()) {
-            case READ:
-                byUnread = QItem.item.unread.isFalse();
-                break;
-            case UNREAD:
-                byUnread = QItem.item.unread.isTrue();
-                break;
-            default:
-                byUnread = QItem.item.unread.isFalse()
-                        .or(QItem.item.unread.isTrue());
-                break;
-        }
-        BooleanExpression byContentType;
-        switch (request.getContentType()) {
-            case ARTICLE:
-                byContentType = QItem.item.hasText.isTrue();
-                break;
-            case IMAGE:
-                byContentType = QItem.item.hasImage.isTrue();
-                break;
-            case VIDEO:
-                byContentType = QItem.item.hasVideo.isTrue();
-                break;
-            default:
-                byContentType = QItem.item.hasText.isTrue()
-                        .or(QItem.item.hasImage.isTrue())
-                        .or(QItem.item.hasVideo.isTrue());
-                break;
-        }
+        BooleanExpression byUnread = makeByUnreadExpression(request.getState());
+        BooleanExpression byContentType = makeByContentTypeExpression(request.getContentType());
         BooleanExpression allConditions = byUserId.and(byUnread).and(byContentType);
         if(request.getTags() != null) {
             BooleanExpression byAnyTag = QItem.item.tags.any().in(request.getTags());
             allConditions = allConditions.and(byAnyTag);
         }
-        Comparator<Item> comparator;
-        switch(request.getSort()) {
-            case NEWEST:
-                comparator = Comparator.comparing(Item::getDateResolved).reversed();
-                break;
-            case OLDEST:
-                comparator = Comparator.comparing(Item::getDateResolved);
-                break;
-            default:
-                comparator = Comparator.comparing(Item::getTitle);
-                break;
-        }
-        Pageable pageRequest = PageRequest.of(0, request.getLimit());
+        Comparator<Item> comparator = makeComparator(request.getSort());
+        Pageable pageRequest = makePageRequest(request.getLimit());
         return itemRepository.findAll(allConditions, pageRequest).getContent()
                 .stream().sorted(comparator).map(ItemMapper::mapToItemDto).collect(Collectors.toList());
+    }
+
+    private BooleanExpression makeByUnreadExpression(SearchState state) {
+        switch (state) {
+            case READ:
+                return QItem.item.unread.isFalse();
+            case UNREAD:
+                return QItem.item.unread.isTrue();
+            default:
+                return QItem.item.unread.isFalse()
+                        .or(QItem.item.unread.isTrue());
+        }
+    }
+
+    private BooleanExpression makeByContentTypeExpression(ContentType contentType) {
+        switch (contentType) {
+            case ARTICLE:
+                return QItem.item.hasText.isTrue();
+            case IMAGE:
+                return QItem.item.hasImage.isTrue();
+            case VIDEO:
+                return QItem.item.hasVideo.isTrue();
+            default:
+                return QItem.item.hasText.isTrue()
+                        .or(QItem.item.hasImage.isTrue())
+                        .or(QItem.item.hasVideo.isTrue());
+        }
+    }
+
+    private Comparator<Item> makeComparator(SortType sortType) {
+        switch(sortType) {
+            case NEWEST:
+                return Comparator.comparing(Item::getDateResolved).reversed();
+            case OLDEST:
+                return Comparator.comparing(Item::getDateResolved);
+            default:
+                return Comparator.comparing(Item::getTitle);
+        }
+    }
+
+    private Pageable makePageRequest(int limit) {
+        return PageRequest.of(0, limit);
     }
 
 }
