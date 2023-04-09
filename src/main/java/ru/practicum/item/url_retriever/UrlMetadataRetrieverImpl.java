@@ -152,6 +152,7 @@ public class UrlMetadataRetrieverImpl implements UrlMetadataRetriever {
         // полученной страницы.
         return UrlMetadataImpl.builder()
                 .title(doc.title())
+                .hasText(true)
                 .hasImage(!imgElements.isEmpty())
                 .hasVideo(!videoElements.isEmpty())
                 .build();

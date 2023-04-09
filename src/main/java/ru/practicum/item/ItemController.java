@@ -19,7 +19,7 @@ import java.util.Set;
 public class ItemController {
     private final ItemService itemService;
 
-    @GetMapping
+    @GetMapping("/search")
     public List<ItemDto> searchWithFilters(@RequestHeader("X-Later-User-Id") long userId,
                              @RequestParam(defaultValue = "unread") String state,
                              @RequestParam(defaultValue = "all") String contentType,

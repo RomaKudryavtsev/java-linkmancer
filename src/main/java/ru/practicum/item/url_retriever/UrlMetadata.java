@@ -9,5 +9,6 @@ public interface UrlMetadata {
     String getTitle();
     boolean isHasImage();
     boolean isHasVideo();
+    boolean isHasText();
     Instant getDateResolved();
 }

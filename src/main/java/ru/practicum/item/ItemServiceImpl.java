@@ -26,8 +26,6 @@ class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final UrlMetadataRetriever retriever;
 
-    private
-
     @Override
     public List<ItemDto> getItems(long userId) {
         List<Item> userItems = itemRepository.findByUserId(userId);
@@ -58,6 +56,8 @@ class ItemServiceImpl implements ItemService {
         inputItem.setHasImage(meta.isHasImage());
         inputItem.setHasVideo(meta.isHasVideo());
         inputItem.setDateResolved(meta.getDateResolved());
+        inputItem.setUnread(true);
+        inputItem.setHasText(meta.isHasText());
 
         Optional<Item> itemOpt = itemRepository.findByUserAndResolvedUrl(adder, meta.getResolvedUrl());
         Item outputItem;
@@ -110,7 +110,7 @@ class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> searchWithFilters(SearchRequest build) {
+    public List<ItemDto> searchWithFilters(SearchRequest request) {
 
         return null;
     }

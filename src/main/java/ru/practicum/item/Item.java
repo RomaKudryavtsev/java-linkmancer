@@ -38,6 +38,10 @@ public class Item {
     private Boolean hasImage;
     @Column(name = "has_video")
     private Boolean hasVideo;
+    @Column(name = "has_text")
+    private Boolean hasText;
+    @Column(name = "unread")
+    private Boolean unread;
     @Column(name = "date_resolved")
     private Instant dateResolved;
 

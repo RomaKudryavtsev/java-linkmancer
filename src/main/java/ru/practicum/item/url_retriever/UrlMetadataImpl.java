@@ -13,6 +13,7 @@ public class UrlMetadataImpl implements UrlMetadata {
     String resolvedUrl;
     String mimeType;
     String title;
+    Boolean hasText;
     Boolean hasImage;
     Boolean hasVideo;
     Instant dateResolved;
@@ -45,6 +46,11 @@ public class UrlMetadataImpl implements UrlMetadata {
     @Override
     public boolean isHasVideo() {
         return hasVideo;
+    }
+
+    @Override
+    public boolean isHasText() {
+        return hasText;
     }
 
     @Override

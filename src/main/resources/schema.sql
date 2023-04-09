@@ -15,6 +15,8 @@ mime_type VARCHAR(1000),
 title VARCHAR(1000),
 has_image BOOLEAN,
 has_video BOOLEAN,
+has_text BOOLEAN,
+unread BOOLEAN,
 date_resolved timestamp,
 CONSTRAINT fk_items_to_users FOREIGN KEY(user_id) REFERENCES users(id),
 UNIQUE(id, url) );
