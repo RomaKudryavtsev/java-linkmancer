@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.item.url_retriever.UrlMetadata;
 import ru.practicum.item.url_retriever.UrlMetadataRetriever;
+import ru.practicum.user.User;
 import ru.practicum.user.UserRepository;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,8 +45,9 @@ class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto addNewItem(long userId, ItemDto itemDto) {
         Item inputItem = ItemMapper.mapToItem(itemDto);
-        inputItem.setUser(userRepository.findById(userId).orElseThrow());
+        User adder = userRepository.findById(userId).orElseThrow();
         UrlMetadata meta = retriever.retrieve(inputItem.getUrl());
+        inputItem.setUser(adder);
         inputItem.setUrl(meta.getNormalUrl());
         inputItem.setResolvedUrl(meta.getResolvedUrl());
         inputItem.setMimeType(meta.getMimeType());
@@ -52,7 +55,20 @@ class ItemServiceImpl implements ItemService {
         inputItem.setHasImage(meta.isHasImage());
         inputItem.setHasVideo(meta.isHasVideo());
         inputItem.setDateResolved(meta.getDateResolved());
-        Item outputItem = itemRepository.save(inputItem);
+
+        Optional<Item> itemOpt = itemRepository.findByUserAndResolvedUrl(adder, meta.getResolvedUrl());
+        Item outputItem;
+        if(itemOpt.isEmpty()) {
+            outputItem = itemRepository.save(inputItem);
+        } else {
+            inputItem = itemOpt.get();
+            if(itemDto.getTags() != null && !itemDto.getTags().isEmpty()) {
+                inputItem.getTags().addAll(itemDto.getTags());
+                outputItem = itemRepository.save(inputItem);
+            } else {
+                outputItem = itemOpt.get();
+            }
+        }
         return ItemMapper.mapToItemDto(outputItem);
     }
 

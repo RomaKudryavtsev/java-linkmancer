@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import ru.practicum.user.User;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryRestResource
 public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositoryCustom,
@@ -15,6 +17,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositor
     List<Item> findByUserId(long userId);
     List<ItemInfo> findUrlByUserId(long userId);
     void deleteByUserIdAndId(long userId, long id);
+    Optional<Item> findByUserAndResolvedUrl(User user, String resolvedUrl);
 
     @Query("select new ru.practicum.item.ItemCountByUser(it.user.id, count(it.id))" +
             "from Item as it "+
