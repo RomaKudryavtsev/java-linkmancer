@@ -138,15 +138,15 @@ class ItemServiceImpl implements ItemService {
         if(request.getUnread() != null) {
             itemRepository.modifyReadStatus(request.getItemId(), request.getUnread());
         }
-        if(request.getTags() != null && !request.getTags().isEmpty()) {
+        if(request.getTags() != null && !request.getTags().getTags().isEmpty()) {
             Item toBeUpdated = itemRepository.findById(request.getItemId()).orElseThrow();
             if (request.getReplaceTags()) {
                 //NOTE: Rewrite all tags
-                toBeUpdated.setTags(request.getTags());
+                toBeUpdated.setTags(request.getTags().getTags());
             } else {
                 //NOTE: Add tags
                 Set<String> updatedTags = toBeUpdated.getTags();
-                updatedTags.addAll(request.getTags());
+                updatedTags.addAll(request.getTags().getTags());
                 toBeUpdated.setTags(updatedTags);
             }
             itemRepository.save(toBeUpdated);

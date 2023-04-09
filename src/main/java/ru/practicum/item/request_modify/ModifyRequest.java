@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import ru.practicum.item.request_tags.TagsRequest;
 
 import java.util.Set;
 
@@ -13,7 +14,7 @@ import java.util.Set;
 public class ModifyRequest {
     Long itemId;
     Long userId;
-    Set<String> tags;
+    TagsRequest tags;
     Boolean unread;
     Boolean replaceTags;
 }

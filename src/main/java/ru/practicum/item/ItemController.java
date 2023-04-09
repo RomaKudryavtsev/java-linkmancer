@@ -40,7 +40,7 @@ public class ItemController {
                 .userId(userId)
                 .replaceTags(replace)
                 .unread(unread)
-                .tags(tagsRequest.getTags())
+                .tags(tagsRequest)
                 .build());
     }
 
