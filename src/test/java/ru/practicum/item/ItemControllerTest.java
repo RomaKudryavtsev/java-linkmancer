@@ -1,6 +1,7 @@
 package ru.practicum.item;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,25 +9,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import ru.practicum.config.AppConfig;
-import ru.practicum.config.PersistenceConfig;
-import ru.practicum.config.TestConfig;
-import ru.practicum.config.WebConfig;
+import ru.practicum.item.request_modify.ModifyRequest;
+import ru.practicum.item.request_tags.TagsRequest;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,8 +64,21 @@ public class ItemControllerTest {
     }
 
     @Test
-    void updateItem() {
-
+    void updateItem() throws Exception {
+        itemDto.setTags(Set.of("Yandex"));
+        TagsRequest tagsRequest = new TagsRequest();
+        tagsRequest.setTags(Set.of("Yandex"));
+        when(itemService.modifyItem(any())).thenReturn(itemDto);
+        mvc.perform(patch("/items/{id}/modify", 1L)
+                        .content(mapper.writeValueAsString(tagsRequest))
+                        .header("X-Later-User-Id", 1L)
+                        .param("replace", "true")
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.tags", Matchers.hasItem("Yandex")))
+                .andExpect(jsonPath("$.tags", hasSize(1)));
     }
 
     @Test
