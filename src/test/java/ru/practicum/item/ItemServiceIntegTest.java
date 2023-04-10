@@ -38,7 +38,7 @@ import static org.hamcrest.Matchers.equalTo;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class, PersistenceConfig.class, WebConfig.class})
 @WebAppConfiguration
-public class ItemServiceImplTest {
+public class ItemServiceIntegTest {
     private final EntityManager em;
     private final ItemService itemService;
     private final UserService userService;
@@ -47,7 +47,7 @@ public class ItemServiceImplTest {
     private final List<ItemDto> itemDtoList = new ArrayList<>();
 
     @Autowired
-    public ItemServiceImplTest(EntityManager em, ItemService itemService, @Qualifier("userServiceImpl") UserService userService) {
+    public ItemServiceIntegTest(EntityManager em, ItemService itemService, @Qualifier("userServiceImpl") UserService userService) {
         this.em = em;
         this.itemService = itemService;
         this.userService = userService;
