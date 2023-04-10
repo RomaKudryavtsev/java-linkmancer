@@ -38,11 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class UserControllerTestWithContext {
     private final ObjectMapper mapper = new ObjectMapper();
-
     private final UserService userService;
-
     private MockMvc mvc;
-
     private UserDto userDto;
 
     @Autowired

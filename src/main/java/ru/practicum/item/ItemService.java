@@ -14,7 +14,7 @@ interface ItemService {
 
     List<ItemInfoWithUrlState> getItemUrlWithState(long userId);
 
-    ItemDto addNewItem(long userId, ItemDto itemDto);
+    ItemDto addNewItem(Long userId, ItemDto itemDto);
 
     void deleteItem(long userId, long itemId);
 

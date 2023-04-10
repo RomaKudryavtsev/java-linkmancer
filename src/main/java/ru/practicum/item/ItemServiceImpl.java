@@ -48,7 +48,7 @@ class ItemServiceImpl implements ItemService {
 
     @Transactional
     @Override
-    public ItemDto addNewItem(long userId, ItemDto itemDto) {
+    public ItemDto addNewItem(Long userId, ItemDto itemDto) {
         Item inputItem = ItemMapper.mapToItem(itemDto);
         User adder = userRepository.findById(userId).orElseThrow();
         UrlMetadata meta = retriever.retrieve(inputItem.getUrl());
