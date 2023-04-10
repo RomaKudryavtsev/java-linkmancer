@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import ru.practicum.item.request_modify.ModifyRequest;
 import ru.practicum.item.request_tags.TagsRequest;
 
 import java.nio.charset.StandardCharsets;
@@ -21,12 +20,9 @@ import java.util.Set;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.contains;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
@@ -82,8 +78,13 @@ public class ItemControllerTest {
     }
 
     @Test
-    void deleteItem() {
-
+    void deleteItem() throws Exception {
+        doNothing().when(itemService).deleteById(1L, 1L);
+        mvc.perform(delete("/items/{id}/delete", 1L)
+                        .header("X-Later-User-Id", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().string("deleted"));
+        verify(itemService, times(1)).deleteById(1L, 1L);
     }
 }
 

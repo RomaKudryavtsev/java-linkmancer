@@ -81,7 +81,7 @@ class ItemServiceImpl implements ItemService {
 
     @Transactional
     @Override
-    public void deleteItem(long userId, long itemId) {
+    public void deleteItem(Long userId, Long itemId) {
         itemRepository.deleteByUserIdAndId(userId, itemId);
     }
 
