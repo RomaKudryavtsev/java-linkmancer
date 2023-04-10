@@ -14,6 +14,8 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Instant;
 
 @Service
@@ -102,7 +104,7 @@ public class UrlMetadataRetrieverImpl implements UrlMetadataRetriever {
     }
 
     private UrlMetadataImpl handleImage(URI url) {
-        String name = new File(url).getName();
+        String name = new File(url.getPath()).getName();
         return UrlMetadataImpl.builder()
                 .title(name)
                 .hasImage(true)

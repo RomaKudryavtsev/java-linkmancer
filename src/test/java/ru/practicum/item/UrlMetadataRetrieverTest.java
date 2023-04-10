@@ -60,7 +60,7 @@ public class UrlMetadataRetrieverTest {
                     public HttpHeaders headers() {
                         Map<String, List<String>> headerMap = new HashMap<>();
                         List<String> contentType = new ArrayList<>();
-                        contentType.add("text/html");
+                        contentType.add("image/jpeg");
                         headerMap.put("Content-Type", contentType);
                         return HttpHeaders.of(headerMap, (name, value) -> true);
                     }
@@ -78,7 +78,7 @@ public class UrlMetadataRetrieverTest {
                     @Override
                     public URI uri() {
                         try {
-                            return new URI("https://practicum.yandex.ru/java-developer/");
+                            return new URI("https://practicum.yandex.ru/java-developer/picture.jpeg");
                         } catch (URISyntaxException e) {
                             throw new RuntimeException(e);
                         }
@@ -93,13 +93,12 @@ public class UrlMetadataRetrieverTest {
 
     @Test
     public void retrieve() throws Exception {
-        UrlMetadata meta = retriever.retrieve("https://practicum.yandex.ru/java-developer/");
-        assertThat(meta.getResolvedUrl(), equalTo("https://practicum.yandex.ru/java-developer/"));
-        assertThat(meta.getMimeType(), equalTo("text"));
-        assertThat(meta.getNormalUrl(), equalTo("https://practicum.yandex.ru/java-developer/"));
+        UrlMetadata meta = retriever.retrieve("https://practicum.yandex.ru/java-developer/picture.jpeg");
+        assertThat(meta.getResolvedUrl(), equalTo("https://practicum.yandex.ru/java-developer/picture.jpeg"));
+        assertThat(meta.getMimeType(), equalTo("image"));
+        assertThat(meta.getNormalUrl(), equalTo("https://practicum.yandex.ru/java-developer/picture.jpeg"));
         assertThat(meta.getTitle(), notNullValue());
         assertThat(meta.getDateResolved(), notNullValue());
-        assertTrue(meta.isHasText());
-        assertFalse(meta.isHasImage());
+        assertTrue(meta.isHasImage());
     }
 }
