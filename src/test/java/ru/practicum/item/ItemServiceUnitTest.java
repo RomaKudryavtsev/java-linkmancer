@@ -15,6 +15,7 @@ import ru.practicum.user.UserRepository;
 import ru.practicum.user.UserState;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -96,6 +97,32 @@ public class ItemServiceUnitTest {
         assertThat(output.getUserId(), equalTo(1L));
         assertThat(output.getUrl(), equalTo("https://practicum.yandex.ru/java-developer/"));
         assertThat(output.getTags(), hasSize(2));
+    }
+
+    @Test
+    public void getItems() {
+        Mockito.when(itemRepositoryMock.findByUserId(Mockito.anyLong())).thenReturn(List.of(testItem));
+        assertThat(itemService.getItems(1L), hasSize(1));
+    }
+
+    @Test
+    public void countItemsByUser() {
+
+    }
+
+    @Test
+    public void countByUserRegistered() {
+
+    }
+
+    @Test
+    public void getItemsByUserIdAndTags() {
+
+    }
+
+    @Test
+    public void findItemsByLastNamePrefix() {
+
     }
 
     @Test

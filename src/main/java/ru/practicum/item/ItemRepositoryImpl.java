@@ -1,6 +1,7 @@
 package ru.practicum.item;
 
 import org.springframework.context.annotation.Lazy;
+import ru.practicum.item.url_service.ItemUrlService;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package ru.practicum.item;
+package ru.practicum.item.url_service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
