@@ -16,8 +16,6 @@ interface ItemService {
 
     ItemDto addNewItem(Long userId, ItemDto itemDto);
 
-    void deleteItem(Long userId, Long itemId);
-
     List<ItemCountByUser> countItemsByUser(String urlPart);
 
     List<ItemCountByUser> countByUserRegistered(LocalDate dateFrom, LocalDate dateTo);

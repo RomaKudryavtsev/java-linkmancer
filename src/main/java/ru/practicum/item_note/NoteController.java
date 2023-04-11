@@ -12,13 +12,13 @@ public class NoteController {
     private final NoteService noteService;
 
     @PostMapping
-    public ItemNoteDto add(@RequestHeader("X-Later-User-Id") Long userId,
+    public ItemNoteDto saveNewNote(@RequestHeader("X-Later-User-Id") Long userId,
                            @RequestBody ItemNoteDto itemNoteDto) {
         return noteService.addNote(userId, itemNoteDto);
     }
 
     @GetMapping("/search")
-    public List<ItemNoteDto> searchNotes(@RequestHeader("X-Later-User-Id") Long userId,
+    public List<ItemNoteDto> searchNotesByUrl(@RequestHeader("X-Later-User-Id") Long userId,
                                          @RequestParam("url") String url) {
         return noteService.searchNotes(userId, url);
     }

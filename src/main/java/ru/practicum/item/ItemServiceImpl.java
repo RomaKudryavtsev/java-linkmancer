@@ -79,12 +79,6 @@ class ItemServiceImpl implements ItemService {
         return ItemMapper.mapToItemDto(outputItem);
     }
 
-    @Transactional
-    @Override
-    public void deleteItem(Long userId, Long itemId) {
-        itemRepository.deleteByUserIdAndId(userId, itemId);
-    }
-
     @Override
     public List<ItemCountByUser> countItemsByUser(String urlPart) {
         return itemRepository.countItemsByUser(urlPart);
@@ -152,6 +146,7 @@ class ItemServiceImpl implements ItemService {
         return ItemMapper.mapToItemDto(itemRepository.findById(request.getItemId()).orElseThrow());
     }
 
+    @Transactional
     @Override
     public void deleteById(long userId, long itemId) {
         checkIfOwnerIsModifying(userId, itemId);
