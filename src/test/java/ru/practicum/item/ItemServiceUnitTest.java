@@ -15,7 +15,12 @@ import ru.practicum.user.UserRepository;
 import ru.practicum.user.UserState;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.Set;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 
 @ExtendWith(MockitoExtension.class)
 public class ItemServiceUnitTest {
@@ -81,9 +86,16 @@ public class ItemServiceUnitTest {
     public void saveItem() {
         Mockito.when(itemRepositoryMock.save(Mockito.any())).thenReturn(testItem);
         Mockito.when(retrieverMock.retrieve(Mockito.anyString())).thenReturn(testMeta);
+        Mockito.when(userRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.of(testUser));
         Long userId = 1L;
-        ItemDto input;
-        ItemDto output;
+        ItemDto input = new ItemDto();
+        input.setUrl("https://practicum.yandex.ru/java-developer/");
+        input.setTags(Set.of("Education", "IT"));
+        ItemDto output = itemService.addNewItem(userId, input);
+        assertThat(output.getId(), equalTo(1L));
+        assertThat(output.getUserId(), equalTo(1L));
+        assertThat(output.getUrl(), equalTo("https://practicum.yandex.ru/java-developer/"));
+        assertThat(output.getTags(), hasSize(2));
     }
 
     @Test
