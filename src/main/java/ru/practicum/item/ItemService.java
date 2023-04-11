@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 interface ItemService {
-    List<ItemDto> getItems(long userId);
+    List<ItemDto> getUsersItems(long userId);
 
     List<ItemInfo> getItemUrl(long userId);
 

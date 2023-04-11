@@ -31,7 +31,7 @@ class ItemServiceImpl implements ItemService {
     private final UrlMetadataRetriever retriever;
 
     @Override
-    public List<ItemDto> getItems(long userId) {
+    public List<ItemDto> getUsersItems(long userId) {
         List<Item> userItems = itemRepository.findByUserId(userId);
         return ItemMapper.mapToItemDto(userItems);
     }

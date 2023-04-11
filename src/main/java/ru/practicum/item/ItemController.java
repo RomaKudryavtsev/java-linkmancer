@@ -51,17 +51,17 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDto> get(@RequestHeader("X-Later-User-Id") long userId) {
-        return itemService.getItems(userId);
+    public List<ItemDto> getUsersItems(@RequestHeader("X-Later-User-Id") long userId) {
+        return itemService.getUsersItems(userId);
     }
 
     @GetMapping("/url")
-    public List<ItemInfo> getUrl(@RequestHeader("X-Later-User-Id") long userId) {
+    public List<ItemInfo> getItemUrl(@RequestHeader("X-Later-User-Id") long userId) {
         return itemService.getItemUrl(userId);
     }
 
     @GetMapping("/url/status")
-    public List<ItemInfoWithUrlState> getUrlWithStatus(@RequestHeader("X-Later-User-Id") long userId) {
+    public List<ItemInfoWithUrlState> getItemUrlWithStatus(@RequestHeader("X-Later-User-Id") long userId) {
         return itemService.getItemUrlWithState(userId);
     }
 
@@ -71,7 +71,7 @@ public class ItemController {
     }
 
     @GetMapping("/url/count/dates")
-    public List<ItemCountByUser> countByUserRegistered(@RequestBody DatesRequest request) {
+    public List<ItemCountByUser> getItemCountByUserForUsersRegisteredBetweenDates(@RequestBody DatesRequest request) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate from = LocalDate.parse(request.getFrom(), formatter);
         LocalDate to = LocalDate.parse(request.getTo(), formatter);
@@ -80,7 +80,7 @@ public class ItemController {
     }
 
     @GetMapping("/search_prefix")
-    public List<ItemDto> findItemByPrefix(@RequestParam("prefix") String prefix) {
+    public List<ItemDto> findItemByUserLastNamePrefix(@RequestParam("prefix") String prefix) {
         return itemService.findItemsByLastNamePrefix(prefix);
     }
 

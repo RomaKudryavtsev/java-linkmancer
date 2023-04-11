@@ -108,7 +108,7 @@ public class ItemServiceUnitTest {
     @Test
     public void getItems() {
         Mockito.when(itemRepositoryMock.findByUserId(Mockito.anyLong())).thenReturn(List.of(testItem));
-        assertThat(itemService.getItems(1L), hasSize(1));
+        assertThat(itemService.getUsersItems(1L), hasSize(1));
     }
 
     @Test
