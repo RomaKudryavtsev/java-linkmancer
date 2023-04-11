@@ -19,10 +19,7 @@ import ru.practicum.user.UserRepository;
 import ru.practicum.user.UserState;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -166,5 +163,35 @@ public class ItemServiceUnitTest {
         Mockito.when(itemRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.of(testItem));
         itemService.deleteById(1L, 1L);
         Mockito.verify(itemRepositoryMock, Mockito.times(1)).deleteById(1L);
+    }
+
+    @Test
+    public void getItemUrl() {
+        List<ItemInfo> expectedItemInfos = Arrays.asList(
+                new ItemInfoImpl(1L, "http://example.com/item/1"),
+                new ItemInfoImpl(2L, "http://example.com/item/2")
+        );
+        Mockito.when(itemRepositoryMock.findUrlByUserId(Mockito.anyLong())).thenReturn(expectedItemInfos);
+        assertThat(expectedItemInfos, equalTo(itemService.getItemUrl(1L)));
+    }
+
+    private static class ItemInfoImpl implements ItemInfo {
+        private final Long id;
+        private final String url;
+
+        ItemInfoImpl(Long id, String url) {
+            this.id = id;
+            this.url = url;
+        }
+
+        @Override
+        public Long getId() {
+            return id;
+        }
+
+        @Override
+        public String getUrl() {
+            return url;
+        }
     }
 }
