@@ -1,5 +1,7 @@
 package ru.practicum.item;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.practicum.item.request_modify.ModifyRequest;
+import ru.practicum.item.request_tags.TagsRequest;
 import ru.practicum.item.url_retriever.UrlMetadata;
 import ru.practicum.item.url_retriever.UrlMetadataImpl;
 import ru.practicum.item.url_retriever.UrlMetadataRetriever;
@@ -15,6 +19,7 @@ import ru.practicum.user.UserRepository;
 import ru.practicum.user.UserState;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -24,6 +29,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
 @ExtendWith(MockitoExtension.class)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ItemServiceUnitTest {
     @Mock
     ItemRepository itemRepositoryMock;
@@ -33,16 +39,19 @@ public class ItemServiceUnitTest {
     UrlMetadataRetriever retrieverMock;
     @InjectMocks
     ItemServiceImpl itemService;
-    Item testItem = new Item();
-    User testUser = new User();
+    final Item testItem = new Item();
+    final User testUser = new User();
     UrlMetadata testMeta;
-    Instant testNow = Instant.now();
+    final Instant testNow = Instant.now();
+    ItemCountByUser count;
+
 
     @BeforeEach
     public void setUp() {
         setMeta();
         setUser();
         setItem();
+        count = new ItemCountByUser(1L, 1L);
     }
 
     private void setMeta() {
@@ -107,36 +116,55 @@ public class ItemServiceUnitTest {
 
     @Test
     public void countItemsByUser() {
-
-    }
-
-    @Test
-    public void countByUserRegistered() {
-
-    }
-
-    @Test
-    public void getItemsByUserIdAndTags() {
-
+        Mockito.when(itemRepositoryMock.countItemsByUser(Mockito.anyString())).thenReturn(List.of(count));
+        assertThat(itemService.countItemsByUser("test"), hasSize(1));
     }
 
     @Test
     public void findItemsByLastNamePrefix() {
-
+        Mockito.when(itemRepositoryMock.findItemsByLastNamePrefix(Mockito.anyString())).thenReturn(List.of(testItem));
+        assertThat(itemService.findItemsByLastNamePrefix("test"), hasSize(1));
     }
 
     @Test
-    public void searchItem() {
-
+    public void updateItemRewriteTags() {
+        testItem.setTags(Set.of("test"));
+        Mockito.when(itemRepositoryMock.save(Mockito.any())).thenReturn(testItem);
+        Mockito.when(itemRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.of(testItem));
+        TagsRequest tagsRequest = new TagsRequest();
+        tagsRequest.setTags(Set.of("test"));
+        ModifyRequest modifyRequest = ModifyRequest.builder()
+                .itemId(1L)
+                .userId(1L)
+                .tags(tagsRequest)
+                .unread(false)
+                .replaceTags(true)
+                .build();
+        assertThat(itemService.modifyItem(modifyRequest).getTags(), hasSize(1));
     }
 
     @Test
-    public void updateItem() {
-
+    public void updateItemAddTags() {
+        Set<String> tags = new HashSet<>(Set.of("Education", "IT", "test"));
+        testItem.setTags(tags);
+        Mockito.when(itemRepositoryMock.save(Mockito.any())).thenReturn(testItem);
+        Mockito.when(itemRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.of(testItem));
+        TagsRequest tagsRequest = new TagsRequest();
+        tagsRequest.setTags(Set.of("test"));
+        ModifyRequest modifyRequest = ModifyRequest.builder()
+                .itemId(1L)
+                .userId(1L)
+                .tags(tagsRequest)
+                .unread(false)
+                .replaceTags(false)
+                .build();
+        assertThat(itemService.modifyItem(modifyRequest).getTags(), hasSize(3));
     }
 
     @Test
     public void deleteItem() {
-
+        Mockito.when(itemRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.of(testItem));
+        itemService.deleteById(1L, 1L);
+        Mockito.verify(itemRepositoryMock, Mockito.times(1)).deleteById(1L);
     }
 }
