@@ -1,9 +1,7 @@
 package ru.practicum.item;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.user.User;
 
 import javax.persistence.*;
@@ -17,40 +15,40 @@ import java.util.Set;
 @Setter
 @ToString
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    User user;
 
     @Column
-    private String url;
+    String url;
 
     // здесь остальные поля
     @Column(name = "resolved_url")
-    private String resolvedUrl;
+    String resolvedUrl;
     @Column(name = "mime_type")
-    private String mimeType;
+    String mimeType;
     @Column(name = "title")
-    private String title;
+    String title;
     @Column(name = "has_image")
-    private Boolean hasImage;
+    Boolean hasImage;
     @Column(name = "has_video")
-    private Boolean hasVideo;
+    Boolean hasVideo;
     @Column(name = "has_text")
-    private Boolean hasText;
+    Boolean hasText;
     @Column(name = "unread")
-    private Boolean unread;
+    Boolean unread;
     @Column(name = "date_resolved")
-    private Instant dateResolved;
-
+    Instant dateResolved;
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "tags", joinColumns = @JoinColumn(name = "item_id"))
     @Column(name = "name")
-    private Set<String> tags = new HashSet<>();
+    Set<String> tags = new HashSet<>();
 
     public Item(User user, String url, Set<String> tags) {
         this.user = user;

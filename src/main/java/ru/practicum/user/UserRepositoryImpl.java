@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserRepositoryImpl implements UserRepositoryCustom {
-
     private final UserRepository userRepository;
 
     public UserRepositoryImpl(@Lazy UserRepository userRepository) {

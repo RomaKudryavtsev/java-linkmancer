@@ -1,8 +1,10 @@
 package ru.practicum.user;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -12,25 +14,20 @@ import java.time.Instant;
 @Getter
 @Setter
 @ToString
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String email;
-
+    Long id;
+    String email;
     @Column(name = "first_name", nullable = false)
-    private String firstName;
-
+    String firstName;
     @Column(name = "last_name")
-    private String lastName;
-
+    String lastName;
     @Column(name = "registration_date")
-    private Instant registrationDate = Instant.now();
-
+    Instant registrationDate = Instant.now();
     @Enumerated(EnumType.STRING)
-    private UserState state;
+    UserState state;
 
     @Override
     public boolean equals(Object o) {

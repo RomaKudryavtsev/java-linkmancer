@@ -1,9 +1,7 @@
 package ru.practicum.item_note;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.item.Item;
 
 import javax.persistence.*;
@@ -15,17 +13,18 @@ import java.time.Instant;
 @Setter
 @ToString
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ItemNote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
     @Column(name = "text")
-    private String text;
+    String text;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     Item item;
     @Column(name = "save_date")
-    private Instant saveDate;
+    Instant saveDate;
 
     @Override
     public boolean equals(Object o) {

@@ -13,7 +13,6 @@ import javax.persistence.Tuple;
 @WritingConverter
 @Slf4j
 public class ItemCountByUserConverter implements Converter<Tuple, ItemCountByUser> {
-
     @Override
     public ItemCountByUser convert(Tuple source) {
         log.info("Conversion is enabled");
