@@ -1,14 +1,5 @@
 # LinkMancer
-
----
- _     _       _   ___  ___                          
-| |   (_)     | |  |  \/  |                          
-| |    _ _ __ | | _| .  . | __ _ _ __   ___ ___ _ __
-| |   | | '_ \| |/ / |\/| |/ _` | '_ \ / __/ _ \ '__|
-| |___| | | | |   <| |  | | (_| | | | | (_|  __/ |   
-\_____/_|_| |_|_|\_\_|  |_/\__,_|_| |_|\___\___|_|
----
-
+![](LOGO_LINKMANCER.png)
 ### Project description
 With LinkMancer, you will never be annoyed by a bunch of links opened in your browser!
 
