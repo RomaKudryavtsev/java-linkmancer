@@ -1,5 +1,10 @@
 # LinkMancer
 ![](LOGO_LINKMANCER.png)
+
+### IMPORTANT
+Currently, all the work is focused on the LinkMancer's reactive version: https://github.com/RomaKudryavtsev/java-linkmancer-reactive
+Check it out!
+
 ### Project description
 With LinkMancer, you will never be annoyed by a bunch of links opened in your browser!
 
@@ -13,7 +18,3 @@ REST service using Spring Framework, Maven, and interaction with the PostgreSQL 
 ### System requirements
 - JVM installed
 - PostgreSQL database is created using any Postgre client (e.g., pgAdmin 4)
-
-### Further plans
-- Turn this repository into an open source project. If you are interested in contributing, please contact me.
-- Refine the REST API endpoints and remove any redundant comments.
